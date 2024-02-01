@@ -26,10 +26,10 @@ export default function App({Component, pageProps}: AppProps) {
         loginMethods: ['sms', 'google', 'twitter', 'apple'],
       }}
     >
-      {/* <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}> */}
+      <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
         <Testing />
-        {/* <Component {...pageProps} /> */}
-      {/* </PrivyWagmiConnector> */}
+        <Component {...pageProps} />
+      </PrivyWagmiConnector>
     </PrivyProvider>
   );
 }
