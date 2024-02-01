@@ -1,24 +1,35 @@
 import '../styles/globals.css';
 
-import {goerli, mainnet} from '@wagmi/chains';
 import type {AppProps} from 'next/app';
-import {configureChains} from 'wagmi';
+import { configureChains} from 'wagmi';
 import {publicProvider} from 'wagmi/providers/public';
 
 import {PrivyProvider} from '@privy-io/react-auth';
 import {PrivyWagmiConnector} from '@privy-io/wagmi-connector';
+import { Testing } from 'components/Testing';
+import { customChain } from 'lib/customChain';
 
-const configureChainsConfig = configureChains([mainnet, goerli], [publicProvider()]);
+
+const configureChainsConfig = configureChains([ customChain], [publicProvider()]);
 
 export default function App({Component, pageProps}: AppProps) {
   return (
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
-      config={{embeddedWallets: {createOnLogin: 'all-users', requireUserPasswordOnCreate: false}}}
+      config={{
+        embeddedWallets: {
+          createOnLogin: 'all-users',
+          requireUserPasswordOnCreate: false,
+        },
+        defaultChain: customChain,
+        supportedChains: [customChain],
+        loginMethods: ['sms', 'google', 'twitter', 'apple'],
+      }}
     >
-      <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
-        <Component {...pageProps} />
-      </PrivyWagmiConnector>
+      {/* <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}> */}
+        <Testing />
+        {/* <Component {...pageProps} /> */}
+      {/* </PrivyWagmiConnector> */}
     </PrivyProvider>
   );
 }
